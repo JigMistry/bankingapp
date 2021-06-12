@@ -1,6 +1,4 @@
-const http = require('http');
 const express = require('express');
-var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var cors = require('cors')
 const port = process.env.PORT || 3000;
@@ -15,7 +13,7 @@ var mysqlConnection = mysql.createConnection({
 });
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
 
 app.get('/customers', function (req, res) {
