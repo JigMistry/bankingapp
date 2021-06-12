@@ -50,3 +50,30 @@ td {
 select {
     width: 184px;
 }
+
+.logs-table {
+    overflow-y: auto;
+    width: 800px;
+    height: 200px;
+    border: 1px solid gray;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+.logs-table .row {
+    display: flex;
+    justify-content: space-around;
+    font-weight: 600;
+    padding: 15px;
+}
+.logs-table .row div {
+    flex: 1;
+}
+.logs-table .row .sent {
+    color: red;
+}
+.logs-table .row .received {
+    color: green;
+}
+.logs-table .row:not(:last-child) {
+    border-bottom: thin solid #ddd5d5;
+}

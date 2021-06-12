@@ -1,5 +1,7 @@
 
 var params;
+var currentCustomer;
+var otherCustomers;
 var SERVER_API_POINT = 'https://bankingappdemo.herokuapp.com/';
 function getCustomers() {
     // Get All Custmers to show on home page
@@ -34,33 +36,57 @@ function getCustomerDetails () {
         .then(response => response.json())
         .then(data => {
             if (!data.customer[0]) window.location.href = "/";
+            currentCustomer = data.customer[0];
             document.getElementById('customerName').innerHTML = data.customer[0].name;
             document.getElementById('cName').innerHTML = data.customer[0].name+"'s Profile";
             document.getElementById('customerAge').innerHTML = data.customer[0].age;
-            document.getElementById('customerBalance').innerHTML = data.customer[0].amount+ ' Rs.';
+            document.getElementById('customerBalance').innerHTML = '₹ '+data.customer[0].amount;
             document.getElementById('customerEmail').innerHTML = data.customer[0].email;
+            // Get Available Customers
+            getAvailbleCustmers();
         });
+    }
+}
 
-        // Get Available Customers
-        fetch(SERVER_API_POINT+'customers')
+function getAvailbleCustmers() {
+    fetch(SERVER_API_POINT+'customers')
         .then(response => response.json())
         .then(data => {
+            otherCustomers = data.customers;
             let dataList = document.getElementById('toContact');
             dataList.innerHTML += `<option value=""> Select contact </option>`;
             for(let i = 0 ; i < data.customers.length; i++) {
                 if(params.id != data.customers[i].id)
                     dataList.innerHTML += `<option value="${data.customers[i].id}"> ${data.customers[i].name}</option>`
             }
+            // Get Transfer Logs
+            getTransferLogs();
         });
+}
 
-        // Get Transfer Logs
-
-        fetch(SERVER_API_POINT+'transferlogs/'+params.id)
+function getTransferLogs() {
+    fetch(SERVER_API_POINT+'transferlogs/'+params.id)
         .then(response => response.json())
         .then(data => {
-            console.log("logs >", data);
+            let logsTable = document.getElementById('logsTable');
+            for(let i = 0 ; i < data.logs.length; i++) {
+                let status = data.logs[i].from_id == params.id ? 'Sent': 'Received';
+                let name ;
+                if (status === 'Sent') {
+                    name = otherCustomers.find((c) => c.id == data.logs[i].to_id).name;
+                } else {
+                    name = otherCustomers.find((c) => c.id == data.logs[i].from_id).name;
+                }
+
+                logsTable.innerHTML += `
+                    <div class="row">
+                        <div>${name}</div>
+                        <div class="${status.toLowerCase()}">${status}</div>
+                        <div>₹ ${data.logs[i].amount}</div>
+                        <div>${new Date(data.logs[i].created_at).toLocaleString()}</div>
+                    </div>`;
+            }
         });
-    }
 }
 
 function transferAmount() {
