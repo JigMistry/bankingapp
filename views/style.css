@@ -6,18 +6,18 @@ body {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    margin: 0 10px;
 }
+
 table {
-    border-radius: 5px;
-    border: 1px solid #000;
+    border-collapse: collapse;
+    width: 100%;
 }
+  
 td, th {
-    text-align: center;
-    border: 1px solid #000;
-}
-td {
-    padding: 5px;
-    /* border-radius: 2px; */
+border: 1px solid #dddddd;
+text-align: center;
+padding: 8px;
 }
 
 .details-container {

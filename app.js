@@ -35,13 +35,13 @@ app.get('/customers/:id', function (req, res) {
 });
 
 app.post('/transfer', function (req, res) {
-    const { fromid, toid, amount } = req.body;
+    const { fromid, toid, amount, created_at } = req.body;
     mysqlConnection.query('SELECT * from customers WHERE id = ?', [fromid], (err, result) => {
         if(result[0].amount >= amount) {
             mysqlConnection.query('UPDATE customers SET amount = amount - ? WHERE id = ?', [amount, fromid], (err, result) => {
                 if(!err) {
                     mysqlConnection.query('UPDATE customers SET amount = amount + ? WHERE id = ?', [amount, toid], (err, result) => {
-                        mysqlConnection.query('INSERT transaction_logs (from_id, to_id, amount) VALUES (?,?,?)', [fromid, toid, amount], (err, result) => {
+                        mysqlConnection.query('INSERT transaction_logs (from_id, to_id, amount, created_at) VALUES (?,?,?,?)', [fromid, toid, amount, created_at], (err, result) => {
 
                         });
                         res.status(200).send({error: false, message: 'Amount Transfered Successfully !'});

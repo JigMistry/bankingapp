@@ -70,6 +70,8 @@ function getTransferLogs() {
         .then(response => response.json())
         .then(data => {
             let logsTable = document.getElementById('logsTable');
+            logsTable.innerHTML = '';
+            data.logs = data.logs.reverse();
             for(let i = 0 ; i < data.logs.length; i++) {
                 let status = data.logs[i].from_id == params.id ? 'Sent': 'Received';
                 let name ;
@@ -84,7 +86,7 @@ function getTransferLogs() {
                         <div class="${status.toLowerCase()}">${status}</div>
                         <div> ${status === 'Received' ? ' from ': ' to '} ${name}</div>
                         <div>₹ ${data.logs[i].amount}</div>
-                        <div>${new Date(data.logs[i].created_at).toLocaleString()}</div>
+                        <div>${data.logs[i].created_at || new Date(data.logs[i].created_at).toLocaleString()}</div>
                     </div>`;
             }
         });
@@ -103,7 +105,8 @@ function transferAmount() {
             body: JSON.stringify({
                 fromid: params.id,
                 toid: document.getElementById('toContact').value,
-                amount: transferAmount
+                amount: transferAmount,
+                created_at: new Date().toUTCString()
             }),
         })
         .then(response => response.json())
