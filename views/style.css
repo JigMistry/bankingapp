@@ -1,3 +1,7 @@
+body {
+    width: 100%;
+    margin: 0;
+}
 .container {
     display: flex;
     justify-content: center;
@@ -17,7 +21,7 @@ td {
 }
 
 .details-container {
-    width: 600px;
+    width: 100%;
     height: 200px;
     border: 1px solid gray;
     margin: 0 auto;
@@ -43,17 +47,19 @@ td {
 }
 
 .transter-container {
-    width: 600px;
+    width: 100%;
     margin: 0 auto;
     margin-top: 100px;
 }
 select {
     width: 184px;
 }
-
+.logs-container {
+    margin: 0 5px 50px 5px;
+}
 .logs-table {
     overflow-y: auto;
-    width: 800px;
+    width: 100%;
     height: 200px;
     border: 1px solid gray;
     margin: 0 auto;
@@ -76,4 +82,27 @@ select {
 }
 .logs-table .row:not(:last-child) {
     border-bottom: thin solid #ddd5d5;
+}
+
+.success-msg {
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, 0);
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: green;
+    font-weight: 600;
+    display: none;
+    font-size: 8px;
+}
+
+@media (min-width: 768px) {
+  .details-container,  .transter-container, .logs-table {
+      width: 60%;
+  }
+  .success-msg {
+    font-size: 16px;
+  }
 }

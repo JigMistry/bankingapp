@@ -54,6 +54,7 @@ function getAvailbleCustmers() {
         .then(data => {
             otherCustomers = data.customers;
             let dataList = document.getElementById('toContact');
+            dataList.innerHTML = '';
             dataList.innerHTML += `<option value=""> Select contact </option>`;
             for(let i = 0 ; i < data.customers.length; i++) {
                 if(params.id != data.customers[i].id)
@@ -111,10 +112,11 @@ function transferAmount() {
             if (data.error) {
                 alert(data.message);
             } else {
-                window.location.href = '/';
+                getCustomerDetails();
+                document.getElementById('successMsg').style.display = 'block';
                 setTimeout(() => {
-                    alert(data.message);
-                }, 2000);   
+                    document.getElementById('successMsg').style.display = 'none';
+                }, 3000);
             }
         });
     } else {
