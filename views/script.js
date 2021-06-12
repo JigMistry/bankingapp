@@ -86,7 +86,7 @@ function getTransferLogs() {
                         <div class="${status.toLowerCase()}">${status}</div>
                         <div> ${status === 'Received' ? ' from ': ' to '} ${name}</div>
                         <div>₹ ${data.logs[i].amount}</div>
-                        <div>${data.logs[i].created_at || new Date(data.logs[i].created_at).toLocaleString()}</div>
+                        <div>${data.logs[i].created_at && new Date(data.logs[i].created_at).toLocaleString()}</div>
                     </div>`;
             }
         });
