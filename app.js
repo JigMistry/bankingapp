@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 var mysql = require('mysql');
 var cors = require('cors')
 const port = process.env.PORT || 3000;
@@ -14,8 +15,13 @@ var mysqlConnection = mysql.createConnection({
 
 app.use(cors());
 app.use(express.json());
-
-
+app.use(express.static(path.join(__dirname, 'views')));
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname+'/views/index.html'));
+});
+app.get('/details', function(req, res) {
+    res.sendFile(path.join(__dirname+'/views/details.html'));
+});
 app.get('/customers', function (req, res) {
     mysqlConnection.query('SELECT * from customers', (err, result) => {
         res.status(200).send({customers: result})
@@ -46,6 +52,12 @@ app.post('/transfer', function (req, res) {
         else {
             res.status(400).send({error: true, message: 'Your Bank balance amount is insufficient to transfer'});
         }
+    })
+});
+
+app.get('/transferlogs/:id', function (req, res) {
+    mysqlConnection.query('SELECT * from transaction_logs WHERE from_id = ? OR to_id = ?', [req.params.id , req.params.id], (err, result) => {
+        res.status(200).send({logs: result})
     })
 });
 app.listen(port, () => {
