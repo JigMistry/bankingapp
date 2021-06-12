@@ -80,8 +80,8 @@ function getTransferLogs() {
 
                 logsTable.innerHTML += `
                     <div class="row">
-                        <div>${name}</div>
                         <div class="${status.toLowerCase()}">${status}</div>
+                        <div> ${status === 'Received' ? ' from ': ' to '} ${name}</div>
                         <div>₹ ${data.logs[i].amount}</div>
                         <div>${new Date(data.logs[i].created_at).toLocaleString()}</div>
                     </div>`;
